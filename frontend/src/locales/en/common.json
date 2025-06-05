@@ -1,0 +1,143 @@
+{
+  "app": {
+    "title": "Kasa",
+    "subtitle": "Restaurant Management System",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "logout": "Logout",
+    "email": "Email Address",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "role": "Role",
+    "signingIn": "Signing in...",
+    "signingUp": "Signing up...",
+    "needAccount": "Need an account?",
+    "haveAccount": "Already have an account?",
+    "createHere": "Create one here",
+    "signInHere": "Sign in here",
+    "loginSuccessful": "Login successful",
+    "registrationSuccessful": "Registration successful",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "passwordsDontMatch": "Passwords don't match",
+    "invalidCredentials": "Invalid email or password",
+    "networkError": "Network error. Please try again.",
+    "demoAccount": "Demo Account"
+  },
+  "dashboard": {
+    "welcome": "Welcome to Dashboard",
+    "hello": "Hello",
+    "overview": "Overview",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "statistics": "Statistics",
+    "systemHealth": "System Health",
+    "allSystemsOperational": "All systems operational",
+    "title": "🍽️ Kasa Dashboard",
+    "welcomeTitle": "Welcome to Kasa Restaurant Management! 🎉",
+    "welcomeDescription": "Your comprehensive solution for managing restaurant operations. The user authentication system is now live and ready to use. More powerful features are coming soon to help you streamline your restaurant business.",
+    "userAuthenticationTitle": "✅ User Authentication",
+    "userAuthenticationDescription": "Secure login system with role-based access control for your team members.",
+    "availableNow": "Available Now",
+    "comingSoon": "Coming Soon",
+    "developmentNote": "🚀 This is just the beginning! We're actively developing more features to make your restaurant management easier and more efficient.",
+    "currentVersion": "Current Version: 1.0.0 - Authentication & User Management",
+    "features": {
+      "menuManagement": {
+        "title": "Menu Management",
+        "description": "Create, edit, and organize your restaurant menu items with categories, prices, and descriptions."
+      },
+      "orderManagement": {
+        "title": "Order Management",
+        "description": "Track and manage customer orders from placement to completion with real-time updates."
+      },
+      "tableManagement": {
+        "title": "Table Management",
+        "description": "Manage table reservations, seating arrangements, and dining room capacity."
+      },
+      "staffManagement": {
+        "title": "Staff Management",
+        "description": "Manage employee schedules, roles, and performance tracking across all locations."
+      },
+      "inventoryControl": {
+        "title": "Inventory Control",
+        "description": "Track ingredients, supplies, and automatic reorder alerts for efficient inventory management."
+      },
+      "financialReports": {
+        "title": "Financial Reports",
+        "description": "Generate detailed sales reports, profit analysis, and financial insights for better decisions."
+      },
+      "customerManagement": {
+        "title": "Customer Management",
+        "description": "Build customer profiles, loyalty programs, and personalized dining experiences."
+      },
+      "multiLocationSupport": {
+        "title": "Multi-Location Support",
+        "description": "Manage multiple restaurant locations from a single dashboard with location-specific analytics."
+      }
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "restaurants": "Restaurants",
+    "orders": "Orders",
+    "menu": "Menu",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "user": {
+    "profile": "Profile",
+    "manageUsers": "Manage Users",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "userList": "User List",
+    "userDetails": "User Details"
+  },
+  "restaurant": {
+    "name": "Restaurant Name",
+    "address": "Address",
+    "phone": "Phone Number",
+    "manageRestaurants": "Manage Restaurants"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "pageNotFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "serverError": "Server error",
+    "tryAgain": "Please try again"
+  },
+  "language": {
+    "english": "English",
+    "turkish": "Türkçe",
+    "changeLanguage": "Change Language"
+  }
+}

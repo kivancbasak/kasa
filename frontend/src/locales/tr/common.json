@@ -1,0 +1,143 @@
+{
+  "app": {
+    "title": "Kasa",
+    "subtitle": "Restoran Yönetim Sistemi",
+    "loading": "Yükleniyor..."
+  },
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signUp": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "confirmPassword": "Şifre Onayı",
+    "role": "Rol",
+    "signingIn": "Giriş yapılıyor...",
+    "signingUp": "Kayıt olunuyor...",
+    "needAccount": "Hesabınız yok mu?",
+    "haveAccount": "Zaten hesabınız var mı?",
+    "createHere": "Buradan oluşturun",
+    "signInHere": "Buradan giriş yapın",
+    "loginSuccessful": "Giriş başarılı",
+    "registrationSuccessful": "Kayıt başarılı",
+    "emailRequired": "E-posta gerekli",
+    "passwordRequired": "Şifre gerekli",
+    "passwordMinLength": "Şifre en az 6 karakter olmalı",
+    "passwordsDontMatch": "Şifreler eşleşmiyor",
+    "invalidCredentials": "Geçersiz e-posta veya şifre",
+    "networkError": "Ağ hatası. Lütfen tekrar deneyin.",
+    "demoAccount": "Demo Hesap"
+  },
+  "dashboard": {
+    "welcome": "Dashboard'a Hoş Geldiniz",
+    "hello": "Merhaba",
+    "overview": "Genel Bakış",
+    "quickActions": "Hızlı İşlemler",
+    "recentActivity": "Son Aktiviteler",
+    "statistics": "İstatistikler",
+    "systemHealth": "Sistem Durumu",
+    "allSystemsOperational": "Tüm sistemler çalışıyor",
+    "title": "🍽️ Kasa Dashboard",
+    "welcomeTitle": "Kasa Restoran Yönetimine Hoş Geldiniz! 🎉",
+    "welcomeDescription": "Restoran operasyonlarını yönetmek için kapsamlı çözümünüz. Kullanıcı kimlik doğrulama sistemi artık canlı ve kullanıma hazır. Restoran işletmenizi kolaylaştırmak için daha güçlü özellikler yakında geliyor.",
+    "userAuthenticationTitle": "✅ Kullanıcı Kimlik Doğrulama",
+    "userAuthenticationDescription": "Ekip üyeleriniz için rol tabanlı erişim kontrolü ile güvenli giriş sistemi.",
+    "availableNow": "Şimdi Mevcut",
+    "comingSoon": "Yakında Geliyor",
+    "developmentNote": "🚀 Bu sadece başlangıç! Restoran yönetiminizi daha kolay ve verimli hale getirmek için aktif olarak daha fazla özellik geliştiriyoruz.",
+    "currentVersion": "Mevcut Sürüm: 1.0.0 - Kimlik Doğrulama ve Kullanıcı Yönetimi",
+    "features": {
+      "menuManagement": {
+        "title": "Menü Yönetimi",
+        "description": "Kategoriler, fiyatlar ve açıklamalar ile restoran menü öğelerinizi oluşturun, düzenleyin ve organize edin."
+      },
+      "orderManagement": {
+        "title": "Sipariş Yönetimi",
+        "description": "Müşteri siparişlerini veriliş anından tamamlanmasına kadar gerçek zamanlı güncellemelerle takip edin ve yönetin."
+      },
+      "tableManagement": {
+        "title": "Masa Yönetimi",
+        "description": "Masa rezervasyonları, oturma düzenleri ve yemek salonu kapasitesini yönetin."
+      },
+      "staffManagement": {
+        "title": "Personel Yönetimi",
+        "description": "Tüm lokasyonlarda çalışan programları, rolleri ve performans takibini yönetin."
+      },
+      "inventoryControl": {
+        "title": "Envanter Kontrolü",
+        "description": "Verimli envanter yönetimi için malzemeler, tedarikler ve otomatik yeniden sipariş uyarılarını takip edin."
+      },
+      "financialReports": {
+        "title": "Mali Raporlar",
+        "description": "Daha iyi kararlar için detaylı satış raporları, kâr analizi ve mali içgörüler oluşturun."
+      },
+      "customerManagement": {
+        "title": "Müşteri Yönetimi",
+        "description": "Müşteri profilleri, sadakat programları ve kişiselleştirilmiş yemek deneyimleri oluşturun."
+      },
+      "multiLocationSupport": {
+        "title": "Çoklu Lokasyon Desteği",
+        "description": "Lokasyona özel analizlerle birden fazla restoran lokasyonunu tek bir dashboard'dan yönetin."
+      }
+    }
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "dashboard": "Dashboard",
+    "users": "Kullanıcılar",
+    "restaurants": "Restoranlar",
+    "orders": "Siparişler",
+    "menu": "Menü",
+    "reports": "Raporlar",
+    "settings": "Ayarlar"
+  },
+  "user": {
+    "profile": "Profil",
+    "manageUsers": "Kullanıcı Yönetimi",
+    "addUser": "Kullanıcı Ekle",
+    "editUser": "Kullanıcı Düzenle",
+    "deleteUser": "Kullanıcı Sil",
+    "userList": "Kullanıcı Listesi",
+    "userDetails": "Kullanıcı Detayları"
+  },
+  "restaurant": {
+    "name": "Restoran Adı",
+    "address": "Adres",
+    "phone": "Telefon Numarası",
+    "manageRestaurants": "Restoran Yönetimi"
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "actions": "İşlemler",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "createdAt": "Oluşturulma Tarihi",
+    "updatedAt": "Güncellenme Tarihi",
+    "yes": "Evet",
+    "no": "Hayır",
+    "confirm": "Onayla",
+    "close": "Kapat"
+  },
+  "errors": {
+    "somethingWentWrong": "Bir şeyler yanlış gitti",
+    "pageNotFound": "Sayfa bulunamadı",
+    "unauthorized": "Yetkisiz erişim",
+    "forbidden": "Erişim yasak",
+    "serverError": "Sunucu hatası",
+    "tryAgain": "Lütfen tekrar deneyin"
+  },
+  "language": {
+    "english": "English",
+    "turkish": "Türkçe",
+    "changeLanguage": "Dil Değiştir"
+  }
+}
