@@ -5,8 +5,8 @@ const { authenticateToken, requireAdmin, requireManager } = require('../middlewa
 
 const router = express.Router();
 
-// Get all users (admin/manager only)
-router.get('/', authenticateToken, requireManager, async (req, res) => {
+// Get all users (admin only)
+router.get('/', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const result = await db.query(
       `SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.restaurant_id, 
@@ -116,23 +116,108 @@ router.put('/password', authenticateToken, async (req, res) => {
   }
 });
 
+// Update user role (admin only)
+router.put('/:id/role', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { role } = req.body;
+    const userId = parseInt(req.params.id);
+    
+    const validRoles = ['admin', 'executive', 'chef', 'manager', 'employee'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: 'Invalid role' });
+    }
+    
+    // Prevent admin from changing their own role
+    if (userId === req.user.id) {
+      return res.status(400).json({ error: 'Cannot change your own role' });
+    }
+    
+    const result = await db.query(
+      `UPDATE users SET role = $1, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = $2 
+       RETURNING id, email, first_name, last_name, role, restaurant_id`,
+      [role, userId]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const user = result.rows[0];
+    res.json({
+      message: 'User role updated successfully',
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        restaurantId: user.restaurant_id
+      }
+    });
+  } catch (error) {
+    console.error('Update user role error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Toggle user active status (admin only)
+router.put('/:id/status', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { isActive } = req.body;
+    const userId = parseInt(req.params.id);
+    
+    // Prevent admin from deactivating themselves
+    if (userId === req.user.id) {
+      return res.status(400).json({ error: 'Cannot change your own status' });
+    }
+    
+    const result = await db.query(
+      `UPDATE users SET is_active = $1, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = $2 
+       RETURNING id, email, first_name, last_name, role, is_active`,
+      [isActive, userId]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const user = result.rows[0];
+    res.json({
+      message: 'User status updated successfully',
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        isActive: user.is_active
+      }
+    });
+  } catch (error) {
+    console.error('Update user status error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Delete user (admin only)
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const userId = req.params.id;
-
+    const userId = parseInt(req.params.id);
+    
     // Prevent admin from deleting themselves
-    if (userId == req.user.id) {
-      return res.status(400).json({ error: 'You cannot delete your own account' });
+    if (userId === req.user.id) {
+      return res.status(400).json({ error: 'Cannot delete your own account' });
     }
-
+    
     const result = await db.query('DELETE FROM users WHERE id = $1 RETURNING email', [userId]);
     
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
-
-    res.json({ message: `User ${result.rows[0].email} deleted successfully` });
+    
+    res.json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Delete user error:', error);
     res.status(500).json({ error: 'Internal server error' });

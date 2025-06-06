@@ -1,5 +1,8 @@
 -- Initialize database for Kasa Restaurant Management System
 
+-- Create enum type for user roles
+CREATE TYPE user_role AS ENUM ('admin', 'executive', 'chef', 'manager', 'employee');
+
 -- Create users table for authentication
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
@@ -7,8 +10,9 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    role VARCHAR(50) DEFAULT 'employee',
+    role user_role DEFAULT 'employee',
     restaurant_id INTEGER,
+    is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

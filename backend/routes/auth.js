@@ -6,10 +6,13 @@ const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Define valid user roles
+const VALID_ROLES = ['admin', 'executive', 'chef', 'manager', 'employee'];
+
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, firstName, lastName, role = 'employee', restaurantId = 1 } = req.body;
+    const { email, password, firstName, lastName, restaurantId = 1 } = req.body;
 
     // Validate input
     if (!email || !password || !firstName || !lastName) {
@@ -26,6 +29,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
+    // Check if this is the first user - they become admin
+    const userCount = await db.query('SELECT COUNT(*) FROM users');
+    const isFirstUser = parseInt(userCount.rows[0].count) === 0;
+    const userRole = isFirstUser ? 'admin' : 'employee';
+
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -35,7 +43,7 @@ router.post('/register', async (req, res) => {
       `INSERT INTO users (email, password_hash, first_name, last_name, role, restaurant_id)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, email, first_name, last_name, role, restaurant_id, created_at`,
-      [email, hashedPassword, firstName, lastName, role, restaurantId]
+      [email, hashedPassword, firstName, lastName, userRole, restaurantId]
     );
 
     const user = result.rows[0];

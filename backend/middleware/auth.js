@@ -30,6 +30,15 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
+// Define role hierarchy (higher number = more permissions)
+const ROLE_HIERARCHY = {
+  'employee': 1,
+  'chef': 2,
+  'manager': 3,
+  'executive': 4,
+  'admin': 5
+};
+
 // Middleware to check if user has admin role
 const requireAdmin = (req, res, next) => {
   if (req.user.role !== 'admin') {
@@ -38,16 +47,51 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
-// Middleware to check if user has manager or admin role
-const requireManager = (req, res, next) => {
-  if (!['admin', 'manager'].includes(req.user.role)) {
-    return res.status(403).json({ error: 'Manager or admin access required' });
+// Middleware to check if user has executive or admin role
+const requireExecutive = (req, res, next) => {
+  if (!['admin', 'executive'].includes(req.user.role)) {
+    return res.status(403).json({ error: 'Executive or admin access required' });
   }
   next();
+};
+
+// Middleware to check if user has manager or higher role
+const requireManager = (req, res, next) => {
+  if (!['admin', 'executive', 'manager'].includes(req.user.role)) {
+    return res.status(403).json({ error: 'Manager or higher access required' });
+  }
+  next();
+};
+
+// Middleware to check if user has chef or higher role
+const requireChef = (req, res, next) => {
+  if (!['admin', 'executive', 'manager', 'chef'].includes(req.user.role)) {
+    return res.status(403).json({ error: 'Chef or higher access required' });
+  }
+  next();
+};
+
+// Generic middleware to check minimum role level
+const requireMinimumRole = (minimumRole) => {
+  return (req, res, next) => {
+    const userRoleLevel = ROLE_HIERARCHY[req.user.role] || 0;
+    const requiredRoleLevel = ROLE_HIERARCHY[minimumRole] || 0;
+    
+    if (userRoleLevel < requiredRoleLevel) {
+      return res.status(403).json({ 
+        error: `${minimumRole} or higher access required` 
+      });
+    }
+    next();
+  };
 };
 
 module.exports = {
   authenticateToken,
   requireAdmin,
-  requireManager
+  requireExecutive,
+  requireManager,
+  requireChef,
+  requireMinimumRole,
+  ROLE_HIERARCHY
 };

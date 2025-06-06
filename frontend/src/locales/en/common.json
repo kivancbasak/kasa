@@ -14,6 +14,13 @@
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
     "role": "Role",
+    "roles": {
+      "admin": "Admin",
+      "executive": "Executive",
+      "chef": "Chef",
+      "manager": "Manager",
+      "employee": "Employee"
+    },
     "signingIn": "Signing in...",
     "signingUp": "Signing up...",
     "needAccount": "Need an account?",
@@ -32,6 +39,7 @@
   },
   "dashboard": {
     "welcome": "Welcome to Dashboard",
+    "selectService": "Please select a service from the sidebar to get started.",
     "hello": "Hello",
     "overview": "Overview",
     "quickActions": "Quick Actions",
@@ -72,6 +80,10 @@
       "financialReports": {
         "title": "Financial Reports",
         "description": "Generate detailed sales reports, profit analysis, and financial insights for better decisions."
+      },
+      "recipeManagement": {
+        "title": "Recipe Management",
+        "description": "Create and manage recipes, ingredients, and cooking instructions for consistent food quality."
       },
       "customerManagement": {
         "title": "Customer Management",
@@ -125,7 +137,10 @@
     "yes": "Yes",
     "no": "No",
     "confirm": "Confirm",
-    "close": "Close"
+    "close": "Close",
+    "loading": "Loading...",
+    "comingSoon": "Coming Soon",
+    "submit": "Submit"
   },
   "errors": {
     "somethingWentWrong": "Something went wrong",
@@ -135,9 +150,50 @@
     "serverError": "Server error",
     "tryAgain": "Please try again"
   },
+  "settings": {
+    "title": "Settings",
+    "userManagement": "User Management",
+    "adminOnly": "Admin access only",
+    "roleUpdated": "User role updated successfully",
+    "statusUpdated": "User status updated successfully",
+    "userDeleted": "User deleted successfully",
+    "confirmDelete": "Are you sure you want to delete this user? This action cannot be undone."
+  },
   "language": {
     "english": "English",
     "turkish": "Türkçe",
     "changeLanguage": "Change Language"
+  },
+  "staff": {
+    "employeeManagement": "Employee Management",
+    "employeeManagementDesc": "Add, edit, and manage employee profiles, contact information, and personal details.",
+    "scheduling": "Work Scheduling",
+    "schedulingDesc": "Create and manage work schedules, shift assignments, and time-off requests.",
+    "performance": "Performance Tracking",
+    "performanceDesc": "Monitor employee performance, set goals, and track achievements."
+  },
+  "inventory": {
+    "ingredients": "Ingredient Management",
+    "ingredientsDesc": "Track ingredient quantities, expiration dates, and supplier information.",
+    "alerts": "Low Stock Alerts",
+    "alertsDesc": "Automated notifications when inventory levels are running low.",
+    "tracking": "Usage Tracking",
+    "trackingDesc": "Monitor ingredient usage patterns and consumption analytics."
+  },
+  "reports": {
+    "sales": "Sales Reports",
+    "salesDesc": "Daily, weekly, and monthly sales reports with detailed breakdowns.",
+    "profit": "Profit Analysis",
+    "profitDesc": "Track profit margins, cost analysis, and financial performance metrics.",
+    "analytics": "Business Analytics",
+    "analyticsDesc": "Advanced analytics and insights for data-driven business decisions."
+  },
+  "recipes": {
+    "create": "Recipe Creation",
+    "createDesc": "Create new recipes with detailed ingredients and step-by-step instructions.",
+    "ingredients": "Ingredient Lists",
+    "ingredientsDesc": "Manage recipe ingredients, quantities, and nutritional information.",
+    "instructions": "Cooking Instructions",
+    "instructionsDesc": "Detailed cooking steps, timing, and preparation guidelines."
   }
 }

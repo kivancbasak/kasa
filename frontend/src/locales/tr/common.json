@@ -14,6 +14,13 @@
     "lastName": "Soyad",
     "confirmPassword": "Şifre Onayı",
     "role": "Rol",
+    "roles": {
+      "admin": "Yönetici",
+      "executive": "Üst Düzey Yönetici",
+      "chef": "Şef",
+      "manager": "Müdür",
+      "employee": "Çalışan"
+    },
     "signingIn": "Giriş yapılıyor...",
     "signingUp": "Kayıt olunuyor...",
     "needAccount": "Hesabınız yok mu?",
@@ -32,6 +39,7 @@
   },
   "dashboard": {
     "welcome": "Dashboard'a Hoş Geldiniz",
+    "selectService": "Başlamak için lütfen kenar çubuğundan bir hizmet seçin.",
     "hello": "Merhaba",
     "overview": "Genel Bakış",
     "quickActions": "Hızlı İşlemler",
@@ -72,6 +80,10 @@
       "financialReports": {
         "title": "Mali Raporlar",
         "description": "Daha iyi kararlar için detaylı satış raporları, kâr analizi ve mali içgörüler oluşturun."
+      },
+      "recipeManagement": {
+        "title": "Tarif Yönetimi",
+        "description": "Tutarlı yemek kalitesi için tarifler, malzemeler ve pişirme talimatları oluşturun ve yönetin."
       },
       "customerManagement": {
         "title": "Müşteri Yönetimi",
@@ -125,7 +137,9 @@
     "yes": "Evet",
     "no": "Hayır",
     "confirm": "Onayla",
-    "close": "Kapat"
+    "close": "Kapat",
+    "loading": "Yükleniyor...",
+    "comingSoon": "Yakında"
   },
   "errors": {
     "somethingWentWrong": "Bir şeyler yanlış gitti",
@@ -135,9 +149,50 @@
     "serverError": "Sunucu hatası",
     "tryAgain": "Lütfen tekrar deneyin"
   },
+  "settings": {
+    "title": "Ayarlar",
+    "userManagement": "Kullanıcı Yönetimi",
+    "adminOnly": "Sadece yönetici erişimi",
+    "roleUpdated": "Kullanıcı rolü başarıyla güncellendi",
+    "statusUpdated": "Kullanıcı durumu başarıyla güncellendi",
+    "userDeleted": "Kullanıcı başarıyla silindi",
+    "confirmDelete": "Bu kullanıcıyı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+  },
   "language": {
     "english": "English",
     "turkish": "Türkçe",
     "changeLanguage": "Dil Değiştir"
+  },
+  "staff": {
+    "employeeManagement": "Çalışan Yönetimi",
+    "employeeManagementDesc": "Çalışan profillerini, iletişim bilgilerini ve kişisel detayları ekleyin, düzenleyin ve yönetin.",
+    "scheduling": "İş Programlama",
+    "schedulingDesc": "İş programları, vardiya atamaları ve izin taleplerini oluşturun ve yönetin.",
+    "performance": "Performans Takibi",
+    "performanceDesc": "Çalışan performansını izleyin, hedefler belirleyin ve başarıları takip edin."
+  },
+  "inventory": {
+    "ingredients": "Malzeme Yönetimi",
+    "ingredientsDesc": "Malzeme miktarları, son kullanma tarihleri ve tedarikçi bilgilerini takip edin.",
+    "alerts": "Düşük Stok Uyarıları",
+    "alertsDesc": "Envanter seviyeleri düştüğünde otomatik bildirimler.",
+    "tracking": "Kullanım Takibi",
+    "trackingDesc": "Malzeme kullanım desenlerini ve tüketim analizlerini izleyin."
+  },
+  "reports": {
+    "sales": "Satış Raporları",
+    "salesDesc": "Detaylı dökümlerle günlük, haftalık ve aylık satış raporları.",
+    "profit": "Kâr Analizi",
+    "profitDesc": "Kâr marjları, maliyet analizi ve finansal performans metriklerini takip edin.",
+    "analytics": "İş Analitikleri",
+    "analyticsDesc": "Veri odaklı iş kararları için gelişmiş analizler ve içgörüler."
+  },
+  "recipes": {
+    "create": "Tarif Oluşturma",
+    "createDesc": "Detaylı malzemeler ve adım adım talimatlarla yeni tarifler oluşturun.",
+    "ingredients": "Malzeme Listeleri",
+    "ingredientsDesc": "Tarif malzemelerini, miktarlarını ve beslenme bilgilerini yönetin.",
+    "instructions": "Pişirme Talimatları",
+    "instructionsDesc": "Detaylı pişirme adımları, zamanlama ve hazırlık rehberleri."
   }
 }
