@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Kasa Restaurant ERP - Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-utensils me-3"></i>
+                    Kasa Restaurant ERP
+                </h1>
+                <p class="lead mb-5">
+                    Manage all your restaurants from one central system. 
+                    Track recipes, employees, and operations with ease.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="/login" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                    <a href="/register" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-user-plus me-2"></i>Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card feature-card h-100 text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">User Management</h5>
+                    <p class="card-text">
+                        Manage different user roles: Admins, Directors, Chefs, and Staff with appropriate permissions.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="card feature-card h-100 text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-book fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Recipe Wiki</h5>
+                    <p class="card-text">
+                        Create, edit, and share recipes across all your restaurants. Perfect for consistency.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="card feature-card h-100 text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-id-card fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Employee Tracking</h5>
+                    <p class="card-text">
+                        Track employee information, work schedules, and performance across all locations.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="card feature-card h-100 text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Reports & Analytics</h5>
+                    <p class="card-text">
+                        Generate reports and visualize data to make informed business decisions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="card">
+                <div class="card-body p-5">
+                    <h3 class="mb-4">Ready to get started?</h3>
+                    <p class="lead mb-4">
+                        The first user to register becomes the system administrator. 
+                        Start managing your restaurants today!
+                    </p>
+                    <a href="/register" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket me-2"></i>Get Started Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
