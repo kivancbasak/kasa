@@ -16,7 +16,7 @@ class Recipe(Base):
     description = Column(Text)
     created_by = Column(Integer, ForeignKey("users.id"))
 
-    items = relationship("RecipeItem", back_populates="recipe", cascade="all, delete-orphan")
+    items = relationship("RecipeItem", back_populates="recipe", cascade="all, delete-orphan", foreign_keys="RecipeItem.recipe_id")
 
 class RecipeItemType(str, enum.Enum):
     INGREDIENT = "ingredient"
