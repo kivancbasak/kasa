@@ -41,13 +41,15 @@
                             <span id="sidebar-role" class="text-muted">Role</span>
                         </div>
                     </div>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 align-items-center mt-2">
                         <button class="sidebar-user-btn" id="settings-btn" title="Settings">
                             <i class="fas fa-cog"></i>
                         </button>
                         <button class="sidebar-user-btn" id="logout-btn" title="Logout">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
+                        <span id="lang-en" class="sidebar-user-btn" title="English" style="font-size: 1.3rem;">🇬🇧</span>
+                        <span id="lang-tr" class="sidebar-user-btn" title="Türkçe" style="font-size: 1.3rem;">🇹🇷</span>
                     </div>
                 </div>
             </div>
@@ -108,5 +110,13 @@ document.getElementById('logout-btn').onclick = function() {
     localStorage.removeItem('user');
     window.location.href = '/';
 };
+
+// Language selector logic
+function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    alert('Language set to ' + (lang === 'en' ? 'English' : 'Türkçe') + '. (Translation coming soon!)');
+}
+document.getElementById('lang-en').onclick = function() { setLang('en'); };
+document.getElementById('lang-tr').onclick = function() { setLang('tr'); };
 </script>
 {% endblock %} 
