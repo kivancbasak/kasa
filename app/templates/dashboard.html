@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Kasa Restaurant ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar py-4 position-relative" style="min-height: 100vh;">
+            <div class="position-sticky d-flex flex-column h-100">
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white sidebar-link active" href="#" data-feature="user-management">
+                            <i class="fas fa-users me-2"></i>User Management
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white sidebar-link" href="#" data-feature="recipes">
+                            <i class="fas fa-book me-2"></i>Recipes
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white sidebar-link" href="#" data-feature="employees">
+                            <i class="fas fa-id-card me-2"></i>Employees
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white sidebar-link" href="#" data-feature="reports">
+                            <i class="fas fa-chart-bar me-2"></i>Reports
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-auto pt-4 border-top border-secondary text-white small" id="sidebar-user-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle fa-2x me-2"></i>
+                        <div>
+                            <span id="sidebar-username">User</span><br>
+                            <span id="sidebar-role" class="text-muted">Role</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div id="feature-content">
+                <!-- Feature content will be loaded here -->
+                <h2>Welcome to your Dashboard!</h2>
+                <p>Select a feature from the sidebar to get started.</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+// Sidebar navigation logic
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+const featureContent = document.getElementById('feature-content');
+
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        const feature = this.getAttribute('data-feature');
+        loadFeature(feature);
+    });
+});
+
+function loadFeature(feature) {
+    if (feature === 'user-management') {
+        featureContent.innerHTML = `<h3><i class='fas fa-users me-2'></i>User Management</h3><p>Manage users here. (Coming soon)</p>`;
+    } else if (feature === 'recipes') {
+        featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipes</h3><p>View and edit recipes here. (Coming soon)</p>`;
+    } else if (feature === 'employees') {
+        featureContent.innerHTML = `<h3><i class='fas fa-id-card me-2'></i>Employees</h3><p>Track employees here. (Coming soon)</p>`;
+    } else if (feature === 'reports') {
+        featureContent.innerHTML = `<h3><i class='fas fa-chart-bar me-2'></i>Reports</h3><p>View reports and analytics here. (Coming soon)</p>`;
+    } else {
+        featureContent.innerHTML = `<h2>Welcome to your Dashboard!</h2><p>Select a feature from the sidebar to get started.</p>`;
+    }
+}
+
+// Load user info from localStorage
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+document.getElementById('sidebar-username').textContent = user.full_name || 'User';
+document.getElementById('sidebar-role').textContent = user.role || 'Role';
+</script>
+{% endblock %} 
