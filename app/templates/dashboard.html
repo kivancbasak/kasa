@@ -84,7 +84,7 @@ function loadFeature(feature) {
     if (feature === 'user-management') {
         featureContent.innerHTML = `<h3><i class='fas fa-users me-2'></i>User Management</h3><p>Manage users here. (Coming soon)</p>`;
     } else if (feature === 'recipes') {
-        featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipes</h3><p>View and edit recipes here. (Coming soon)</p>`;
+        loadRecipes();
     } else if (feature === 'employees') {
         featureContent.innerHTML = `<h3><i class='fas fa-id-card me-2'></i>Employees</h3><p>Track employees here. (Coming soon)</p>`;
     } else if (feature === 'reports') {
@@ -93,6 +93,160 @@ function loadFeature(feature) {
         featureContent.innerHTML = `<h2>Welcome to your Dashboard!</h2><p>Select a feature from the sidebar to get started.</p>`;
     }
 }
+
+async function loadRecipes() {
+    featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipes</h3><div id='recipes-list'>Loading...</div>`;
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    let isEditor = user.role === 'admin' || user.role === 'chef';
+    try {
+        const res = await fetch('/recipes/', { headers: { Authorization: 'Bearer ' + token } });
+        const recipes = await res.json();
+        let html = '';
+        if (isEditor) {
+            html += `<button class='btn btn-primary mb-3' onclick='showAddRecipeForm()'><i class="fas fa-plus me-2"></i>Add Recipe</button>`;
+        }
+        if (recipes.length === 0) {
+            html += `<div class='alert alert-info'>No recipes found.</div>`;
+        } else {
+            html += `<ul class='list-group'>`;
+            for (const r of recipes) {
+                html += `<li class='list-group-item list-group-item-action' style='cursor:pointer' onclick='viewRecipe(${r.id})'>${r.name} <span class='badge bg-secondary ms-2'>${r.type}</span></li>`;
+            }
+            html += `</ul>`;
+        }
+        document.getElementById('recipes-list').innerHTML = html;
+    } catch (e) {
+        document.getElementById('recipes-list').innerHTML = `<div class='alert alert-danger'>Failed to load recipes.</div>`;
+    }
+}
+
+window.showAddRecipeForm = function() {
+    featureContent.innerHTML = `
+        <h3><i class='fas fa-plus me-2'></i>Add Recipe</h3>
+        <form id='addRecipeForm'>
+            <div class='mb-3'>
+                <label class='form-label'>Name</label>
+                <input type='text' class='form-control' name='name' required>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Type</label>
+                <select class='form-select' name='type' required>
+                    <option value='final'>Final Product</option>
+                    <option value='half'>Half Product</option>
+                </select>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Description</label>
+                <textarea class='form-control' name='description'></textarea>
+            </div>
+            <button type='submit' class='btn btn-success'>Create Recipe</button>
+            <button type='button' class='btn btn-secondary ms-2' onclick='loadRecipes()'>Cancel</button>
+        </form>
+    `;
+    document.getElementById('addRecipeForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch('/recipes/', {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + token },
+                body: formData
+            });
+            if (res.ok) {
+                loadRecipes();
+            } else {
+                const err = await res.json();
+                alert('Error: ' + err.detail);
+            }
+        } catch (e) {
+            alert('Failed to create recipe.');
+        }
+    };
+};
+
+window.viewRecipe = async function(recipeId) {
+    featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipe Details</h3><div id='recipe-detail'>Loading...</div>`;
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    let isEditor = user.role === 'admin' || user.role === 'chef';
+    try {
+        const res = await fetch(`/recipes/${recipeId}`, { headers: { Authorization: 'Bearer ' + token } });
+        const recipe = await res.json();
+        let html = `<h4>${recipe.name} <span class='badge bg-secondary ms-2'>${recipe.type}</span></h4>`;
+        html += `<div class='mb-2 text-muted'>${recipe.description || ''}</div>`;
+        if (isEditor) {
+            html += `<button class='btn btn-sm btn-primary mb-3' onclick='showAddRecipeItemForm(${recipe.id})'><i class="fas fa-plus me-2"></i>Add Ingredient/Halfproduct</button>`;
+        }
+        if (!recipe.items || recipe.items.length === 0) {
+            html += `<div class='alert alert-info'>No items in this recipe.</div>`;
+        } else {
+            html += `<table class='table table-bordered'><thead><tr><th>Name</th><th>Type</th><th>Unit</th><th>Amount</th></tr></thead><tbody>`;
+            for (const i of recipe.items) {
+                html += `<tr><td>${i.item_name}</td><td>${i.item_type}</td><td>${i.unit}</td><td>${i.amount}</td></tr>`;
+            }
+            html += `</tbody></table>`;
+        }
+        html += `<button class='btn btn-secondary' onclick='loadRecipes()'>Back to Recipes</button>`;
+        document.getElementById('recipe-detail').innerHTML = html;
+    } catch (e) {
+        document.getElementById('recipe-detail').innerHTML = `<div class='alert alert-danger'>Failed to load recipe details.</div>`;
+    }
+};
+
+window.showAddRecipeItemForm = function(recipeId) {
+    featureContent.innerHTML = `
+        <h3><i class='fas fa-plus me-2'></i>Add Ingredient/Halfproduct</h3>
+        <form id='addRecipeItemForm'>
+            <div class='mb-3'>
+                <label class='form-label'>Name</label>
+                <input type='text' class='form-control' name='item_name' required>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Type</label>
+                <select class='form-select' name='item_type' required>
+                    <option value='ingredient'>Ingredient</option>
+                    <option value='halfproduct'>Half Product</option>
+                </select>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Unit</label>
+                <input type='text' class='form-control' name='unit' required>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Amount</label>
+                <input type='number' step='0.01' class='form-control' name='amount' required>
+            </div>
+            <div class='mb-3'>
+                <label class='form-label'>Halfproduct (if selected above)</label>
+                <input type='number' class='form-control' name='halfproduct_id' placeholder='Recipe ID (optional)'>
+            </div>
+            <button type='submit' class='btn btn-success'>Add Item</button>
+            <button type='button' class='btn btn-secondary ms-2' onclick='viewRecipe(${recipeId})'>Cancel</button>
+        </form>
+    `;
+    document.getElementById('addRecipeItemForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch(`/recipes/${recipeId}/items`, {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + token },
+                body: formData
+            });
+            if (res.ok) {
+                viewRecipe(recipeId);
+            } else {
+                const err = await res.json();
+                alert('Error: ' + err.detail);
+            }
+        } catch (e) {
+            alert('Failed to add item.');
+        }
+    };
+};
 
 // Load user info from localStorage
 const user = JSON.parse(localStorage.getItem('user') || '{}');
