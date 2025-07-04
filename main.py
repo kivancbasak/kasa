@@ -6,6 +6,7 @@ import os
 
 from app.database import engine, Base
 from app.routers import auth, users, recipes, employees
+from app.models import user, recipe
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
