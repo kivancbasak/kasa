@@ -13,7 +13,8 @@ class Recipe(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
     type = Column(Enum(RecipeType), nullable=False)
-    description = Column(Text)
+    is_active = Column(Integer, default=1)  # 1 for active, 0 for inactive
+    stores = Column(String, default="")  # Comma-separated store names
     created_by = Column(Integer, ForeignKey("users.id"))
 
     items = relationship("RecipeItem", back_populates="recipe", cascade="all, delete-orphan", foreign_keys="RecipeItem.recipe_id")

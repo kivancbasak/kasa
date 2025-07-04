@@ -34,7 +34,8 @@ def list_recipes(db: Session = Depends(get_db)):
             "id": r.id,
             "name": r.name,
             "type": r.type,
-            "description": r.description
+            "is_active": r.is_active,
+            "stores": r.stores
         } for r in recipes
     ]
 
@@ -48,7 +49,8 @@ def get_recipe(recipe_id: int, db: Session = Depends(get_db)):
         "id": recipe.id,
         "name": recipe.name,
         "type": recipe.type,
-        "description": recipe.description,
+        "is_active": recipe.is_active,
+        "stores": recipe.stores,
         "items": [
             {
                 "id": i.id,
@@ -65,17 +67,18 @@ def get_recipe(recipe_id: int, db: Session = Depends(get_db)):
 def create_recipe(
     name: str = Form(...),
     type: RecipeType = Form(...),
-    description: Optional[str] = Form(None),
+    is_active: int = Form(1),
+    stores: str = Form(""),
     db: Session = Depends(get_db),
     user: User = Depends(admin_or_chef)
 ):
     if db.query(Recipe).filter(Recipe.name == name).first():
         raise HTTPException(status_code=400, detail="Recipe name already exists")
-    recipe = Recipe(name=name, type=type, description=description, created_by=user.id)
+    recipe = Recipe(name=name, type=type, is_active=is_active, stores=stores, created_by=user.id)
     db.add(recipe)
     db.commit()
     db.refresh(recipe)
-    return {"id": recipe.id, "name": recipe.name, "type": recipe.type, "description": recipe.description}
+    return {"id": recipe.id, "name": recipe.name, "type": recipe.type, "is_active": recipe.is_active, "stores": recipe.stores}
 
 @router.post("/{recipe_id}/items", response_model=dict)
 def add_recipe_item(

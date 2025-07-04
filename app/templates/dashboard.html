@@ -110,12 +110,24 @@ async function loadRecipes() {
                         <div class='col-auto'>
                             <input type='text' class='form-control' name='name' placeholder='Recipe name' required>
                         </div>
-                        <div class='col-auto'>
-                            <input type='text' class='form-control' name='description' placeholder='Description'>
-                        </div>
                         <div class='col-auto form-check form-switch'>
                             <input class='form-check-input' type='checkbox' id='halfProductCheck' name='type'>
                             <label class='form-check-label' for='halfProductCheck'>Half Product</label>
+                        </div>
+                        <div class='col-auto form-check'>
+                            <input class='form-check-input' type='checkbox' id='activeCheck' name='is_active' checked>
+                            <label class='form-check-label' for='activeCheck'>Active</label>
+                        </div>
+                        <div class='col-auto'>
+                            <select class='form-select' name='stores' id='storesSelect' multiple required style='min-width: 180px;'>
+                                <option value='Kolektif'>Kolektif</option>
+                                <option value='Boden'>Boden</option>
+                                <option value='Yeldeğirmeni'>Yeldeğirmeni</option>
+                                <option value='Kanton'>Kanton</option>
+                                <option value='Gün'>Gün</option>
+                                <option value='Urban'>Urban</option>
+                                <option value='Kompartman'>Kompartman</option>
+                            </select>
                         </div>
                         <div class='col-auto'>
                             <button type='submit' class='btn btn-success'><i class="fas fa-plus me-2"></i>Add</button>
@@ -149,6 +161,11 @@ document.getElementById('addRecipeForm')?.addEventListener('submit', async funct
     const formData = new FormData(this);
     // Checkbox: if checked, type=half, else type=final
     formData.set('type', document.getElementById('halfProductCheck').checked ? 'half' : 'final');
+    // Active checkbox
+    formData.set('is_active', document.getElementById('activeCheck').checked ? 1 : 0);
+    // Stores multi-select
+    const stores = Array.from(document.getElementById('storesSelect').selectedOptions).map(o => o.value).join(',');
+    formData.set('stores', stores);
     const token = localStorage.getItem('token');
     try {
         const res = await fetch('/recipes/', {
