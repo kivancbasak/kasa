@@ -109,4 +109,22 @@ def add_recipe_item(
         "unit": item.unit,
         "amount": item.amount,
         "halfproduct_id": item.halfproduct_id
-    } 
+    }
+
+@router.delete("/{recipe_id}", response_model=dict)
+def delete_recipe(recipe_id: int, db: Session = Depends(get_db), user: User = Depends(admin_or_chef)):
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    db.delete(recipe)
+    db.commit()
+    return {"message": "Recipe deleted"}
+
+@router.delete("/items/{item_id}", response_model=dict)
+def delete_recipe_item(item_id: int, db: Session = Depends(get_db), user: User = Depends(admin_or_chef)):
+    item = db.query(RecipeItem).filter(RecipeItem.id == item_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Recipe item not found")
+    db.delete(item)
+    db.commit()
+    return {"message": "Recipe item deleted"} 

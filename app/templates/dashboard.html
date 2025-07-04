@@ -111,7 +111,12 @@ async function loadRecipes() {
         } else {
             html += `<ul class='list-group'>`;
             for (const r of recipes) {
-                html += `<li class='list-group-item list-group-item-action' style='cursor:pointer' onclick='viewRecipe(${r.id})'>${r.name} <span class='badge bg-secondary ms-2'>${r.type}</span></li>`;
+                html += `<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='cursor:pointer'>
+                    <span onclick='viewRecipe(${r.id})'>${r.name} <span class='badge bg-secondary ms-2'>${r.type}</span></span>`;
+                if (isEditor) {
+                    html += `<button class='btn btn-sm btn-danger ms-2' onclick='deleteRecipe(event, ${r.id})'><i class='fas fa-trash'></i></button>`;
+                }
+                html += `</li>`;
             }
             html += `</ul>`;
         }
@@ -182,9 +187,13 @@ window.viewRecipe = async function(recipeId) {
         if (!recipe.items || recipe.items.length === 0) {
             html += `<div class='alert alert-info'>No items in this recipe.</div>`;
         } else {
-            html += `<table class='table table-bordered'><thead><tr><th>Name</th><th>Type</th><th>Unit</th><th>Amount</th></tr></thead><tbody>`;
+            html += `<table class='table table-bordered'><thead><tr><th>Name</th><th>Type</th><th>Unit</th><th>Amount</th>`;
+            if (isEditor) html += `<th>Action</th>`;
+            html += `</tr></thead><tbody>`;
             for (const i of recipe.items) {
-                html += `<tr><td>${i.item_name}</td><td>${i.item_type}</td><td>${i.unit}</td><td>${i.amount}</td></tr>`;
+                html += `<tr><td>${i.item_name}</td><td>${i.item_type}</td><td>${i.unit}</td><td>${i.amount}</td>`;
+                if (isEditor) html += `<td><button class='btn btn-sm btn-danger' onclick='deleteRecipeItem(${i.id}, ${recipe.id})'><i class='fas fa-trash'></i></button></td>`;
+                html += `</tr>`;
             }
             html += `</tbody></table>`;
         }
@@ -246,6 +255,45 @@ window.showAddRecipeItemForm = function(recipeId) {
             alert('Failed to add item.');
         }
     };
+};
+
+window.deleteRecipe = async function(e, recipeId) {
+    e.stopPropagation();
+    if (!confirm('Are you sure you want to delete this recipe?')) return;
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/recipes/${recipeId}`, {
+            method: 'DELETE',
+            headers: { Authorization: 'Bearer ' + token }
+        });
+        if (res.ok) {
+            loadRecipes();
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.detail);
+        }
+    } catch (e) {
+        alert('Failed to delete recipe.');
+    }
+};
+
+window.deleteRecipeItem = async function(itemId, recipeId) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch(`/recipes/items/${itemId}`, {
+            method: 'DELETE',
+            headers: { Authorization: 'Bearer ' + token }
+        });
+        if (res.ok) {
+            viewRecipe(recipeId);
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.detail);
+        }
+    } catch (e) {
+        alert('Failed to delete item.');
+    }
 };
 
 // Load user info from localStorage
