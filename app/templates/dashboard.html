@@ -104,7 +104,25 @@ async function loadRecipes() {
         const recipes = await res.json();
         let html = '';
         if (isEditor) {
-            html += `<button class='btn btn-primary mb-3' onclick='showAddRecipeForm()'><i class="fas fa-plus me-2"></i>Add Recipe</button>`;
+            html += `
+                <form id='addRecipeForm' class='mb-3'>
+                    <div class='row g-2 align-items-center'>
+                        <div class='col-auto'>
+                            <input type='text' class='form-control' name='name' placeholder='Recipe name' required>
+                        </div>
+                        <div class='col-auto'>
+                            <input type='text' class='form-control' name='description' placeholder='Description'>
+                        </div>
+                        <div class='col-auto form-check form-switch'>
+                            <input class='form-check-input' type='checkbox' id='halfProductCheck' name='type'>
+                            <label class='form-check-label' for='halfProductCheck'>Half Product</label>
+                        </div>
+                        <div class='col-auto'>
+                            <button type='submit' class='btn btn-success'><i class="fas fa-plus me-2"></i>Add</button>
+                        </div>
+                    </div>
+                </form>
+            `;
         }
         if (recipes.length === 0) {
             html += `<div class='alert alert-info'>No recipes found.</div>`;
@@ -126,50 +144,28 @@ async function loadRecipes() {
     }
 }
 
-window.showAddRecipeForm = function() {
-    featureContent.innerHTML = `
-        <h3><i class='fas fa-plus me-2'></i>Add Recipe</h3>
-        <form id='addRecipeForm'>
-            <div class='mb-3'>
-                <label class='form-label'>Name</label>
-                <input type='text' class='form-control' name='name' required>
-            </div>
-            <div class='mb-3'>
-                <label class='form-label'>Type</label>
-                <select class='form-select' name='type' required>
-                    <option value='final'>Final Product</option>
-                    <option value='half'>Half Product</option>
-                </select>
-            </div>
-            <div class='mb-3'>
-                <label class='form-label'>Description</label>
-                <textarea class='form-control' name='description'></textarea>
-            </div>
-            <button type='submit' class='btn btn-success'>Create Recipe</button>
-            <button type='button' class='btn btn-secondary ms-2' onclick='loadRecipes()'>Cancel</button>
-        </form>
-    `;
-    document.getElementById('addRecipeForm').onsubmit = async function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const token = localStorage.getItem('token');
-        try {
-            const res = await fetch('/recipes/', {
-                method: 'POST',
-                headers: { Authorization: 'Bearer ' + token },
-                body: formData
-            });
-            if (res.ok) {
-                loadRecipes();
-            } else {
-                const err = await res.json();
-                alert('Error: ' + err.detail);
-            }
-        } catch (e) {
-            alert('Failed to create recipe.');
+document.getElementById('addRecipeForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    // Checkbox: if checked, type=half, else type=final
+    formData.set('type', document.getElementById('halfProductCheck').checked ? 'half' : 'final');
+    const token = localStorage.getItem('token');
+    try {
+        const res = await fetch('/recipes/', {
+            method: 'POST',
+            headers: { Authorization: 'Bearer ' + token },
+            body: formData
+        });
+        if (res.ok) {
+            loadRecipes();
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.detail);
         }
-    };
-};
+    } catch (e) {
+        alert('Failed to create recipe.');
+    }
+});
 
 window.viewRecipe = async function(recipeId) {
     featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipe Details</h3><div id='recipe-detail'>Loading...</div>`;
