@@ -119,15 +119,15 @@ async function loadRecipes() {
                             <label class='form-check-label' for='activeCheck'>Active</label>
                         </div>
                         <div class='col-auto'>
-                            <select class='form-select' name='stores' id='storesSelect' multiple required style='min-width: 180px;'>
-                                <option value='Kolektif'>Kolektif</option>
-                                <option value='Boden'>Boden</option>
-                                <option value='Yeldeğirmeni'>Yeldeğirmeni</option>
-                                <option value='Kanton'>Kanton</option>
-                                <option value='Gün'>Gün</option>
-                                <option value='Urban'>Urban</option>
-                                <option value='Kompartman'>Kompartman</option>
-                            </select>
+                            <div id='storesCheckboxes' class='d-flex flex-wrap gap-2'>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kolektif'> Kolektif</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Boden'> Boden</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Yeldeğirmeni'> Yeldeğirmeni</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kanton'> Kanton</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Gün'> Gün</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Urban'> Urban</label>
+                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kompartman'> Kompartman</label>
+                            </div>
                         </div>
                         <div class='col-auto'>
                             <button type='submit' class='btn btn-success'><i class="fas fa-plus me-2"></i>Add</button>
@@ -163,8 +163,8 @@ document.getElementById('addRecipeForm')?.addEventListener('submit', async funct
     formData.set('type', document.getElementById('halfProductCheck').checked ? 'half' : 'final');
     // Active checkbox
     formData.set('is_active', document.getElementById('activeCheck').checked ? 1 : 0);
-    // Stores multi-select
-    const stores = Array.from(document.getElementById('storesSelect').selectedOptions).map(o => o.value).join(',');
+    // Stores checkboxes
+    const stores = Array.from(document.querySelectorAll('#storesCheckboxes input[name="stores"]:checked')).map(o => o.value).join(',');
     formData.set('stores', stores);
     const token = localStorage.getItem('token');
     try {
@@ -174,7 +174,7 @@ document.getElementById('addRecipeForm')?.addEventListener('submit', async funct
             body: formData
         });
         if (res.ok) {
-            loadRecipes();
+            await loadRecipes();
         } else {
             const err = await res.json();
             alert('Error: ' + err.detail);
