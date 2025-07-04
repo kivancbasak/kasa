@@ -95,7 +95,7 @@ function loadFeature(feature) {
 }
 
 async function loadRecipes() {
-    featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipes</h3><div id='recipes-list'>Loading...</div>`;
+    featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipes</h3><div id='recipes-table'>Loading...</div>`;
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     let isEditor = user.role === 'admin' || user.role === 'chef';
@@ -104,85 +104,107 @@ async function loadRecipes() {
         const recipes = await res.json();
         let html = '';
         if (isEditor) {
-            html += `
-                <form id='addRecipeForm' class='mb-3'>
-                    <div class='row g-2 align-items-center'>
-                        <div class='col-auto'>
-                            <input type='text' class='form-control' name='name' placeholder='Recipe name' required>
-                        </div>
-                        <div class='col-auto form-check form-switch'>
-                            <input class='form-check-input' type='checkbox' id='halfProductCheck' name='type'>
-                            <label class='form-check-label' for='halfProductCheck'>Half Product</label>
-                        </div>
-                        <div class='col-auto form-check'>
-                            <input class='form-check-input' type='checkbox' id='activeCheck' name='is_active' checked>
-                            <label class='form-check-label' for='activeCheck'>Active</label>
-                        </div>
-                        <div class='col-auto'>
-                            <div id='storesCheckboxes' class='d-flex flex-wrap gap-2'>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kolektif'> Kolektif</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Boden'> Boden</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Yeldeğirmeni'> Yeldeğirmeni</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kanton'> Kanton</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Gün'> Gün</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Urban'> Urban</label>
-                                <label class='form-check-label'><input type='checkbox' class='form-check-input' name='stores' value='Kompartman'> Kompartman</label>
-                            </div>
-                        </div>
-                        <div class='col-auto'>
-                            <button type='submit' class='btn btn-success'><i class="fas fa-plus me-2"></i>Add</button>
-                        </div>
+            html += `<button class='btn btn-danger mb-2' id='deleteSelectedBtn' style='display:none'><i class='fas fa-trash'></i> Delete Selected</button> `;
+            html += `<button class='btn btn-primary mb-2' id='addRowBtn'><i class='fas fa-plus'></i> Add Recipe</button>`;
+        }
+        html += `<table class='table table-bordered align-middle'><thead><tr>`;
+        if (isEditor) html += `<th style='width:30px'><input type='checkbox' id='selectAllRecipes'></th>`;
+        html += `<th>Name</th><th>Type</th><th>Active</th><th>Stores</th>`;
+        if (isEditor) html += `<th>Action</th>`;
+        html += `</tr></thead><tbody id='recipesTbody'>`;
+        // Add row for new recipe (hidden by default)
+        if (isEditor) {
+            html += `<tr id='addRecipeRow' style='display:none'>
+                <td></td>
+                <td><input type='text' class='form-control form-control-sm' id='newRecipeName'></td>
+                <td><select class='form-select form-select-sm' id='newRecipeType'><option value='final'>Final</option><option value='half'>Half</option></select></td>
+                <td class='text-center'><input type='checkbox' id='newRecipeActive' checked></td>
+                <td>
+                    <div class='d-flex flex-wrap gap-1'>
+                        <label><input type='checkbox' class='form-check-input' value='Kolektif'> Kolektif</label>
+                        <label><input type='checkbox' class='form-check-input' value='Boden'> Boden</label>
+                        <label><input type='checkbox' class='form-check-input' value='Yeldeğirmeni'> Yeldeğirmeni</label>
+                        <label><input type='checkbox' class='form-check-input' value='Kanton'> Kanton</label>
+                        <label><input type='checkbox' class='form-check-input' value='Gün'> Gün</label>
+                        <label><input type='checkbox' class='form-check-input' value='Urban'> Urban</label>
+                        <label><input type='checkbox' class='form-check-input' value='Kompartman'> Kompartman</label>
                     </div>
-                </form>
-            `;
+                </td>
+                <td><button class='btn btn-success btn-sm' id='saveNewRecipeBtn'><i class='fas fa-check'></i> Save</button> <button class='btn btn-secondary btn-sm' id='cancelNewRecipeBtn'><i class='fas fa-times'></i> Cancel</button></td>
+            </tr>`;
         }
-        if (recipes.length === 0) {
-            html += `<div class='alert alert-info'>No recipes found.</div>`;
-        } else {
-            html += `<ul class='list-group'>`;
-            for (const r of recipes) {
-                html += `<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='cursor:pointer'>
-                    <span onclick='viewRecipe(${r.id})'>${r.name} <span class='badge bg-secondary ms-2'>${r.type}</span></span>`;
-                if (isEditor) {
-                    html += `<button class='btn btn-sm btn-danger ms-2' onclick='deleteRecipe(event, ${r.id})'><i class='fas fa-trash'></i></button>`;
+        // Existing recipes
+        for (const r of recipes) {
+            html += `<tr>`;
+            if (isEditor) html += `<td><input type='checkbox' class='recipeCheckbox' data-id='${r.id}'></td>`;
+            html += `<td>${r.name}</td><td>${r.type}</td><td class='text-center'>${r.is_active ? '✔️' : ''}</td><td>${r.stores}</td>`;
+            if (isEditor) html += `<td><button class='btn btn-danger btn-sm' onclick='deleteRecipe(event, ${r.id})'><i class='fas fa-trash'></i></button></td>`;
+            html += `</tr>`;
+        }
+        html += `</tbody></table>`;
+        document.getElementById('recipes-table').innerHTML = html;
+        // Add row button logic
+        if (isEditor) {
+            document.getElementById('addRowBtn').onclick = function() {
+                document.getElementById('addRecipeRow').style.display = '';
+                this.disabled = true;
+            };
+            document.getElementById('cancelNewRecipeBtn').onclick = function() {
+                document.getElementById('addRecipeRow').style.display = 'none';
+                document.getElementById('addRowBtn').disabled = false;
+            };
+            document.getElementById('saveNewRecipeBtn').onclick = async function() {
+                const name = document.getElementById('newRecipeName').value.trim();
+                const type = document.getElementById('newRecipeType').value;
+                const is_active = document.getElementById('newRecipeActive').checked ? 1 : 0;
+                const stores = Array.from(document.querySelectorAll('#addRecipeRow input[type=checkbox]:checked')).map(o => o.value).join(',');
+                if (!name) { alert('Name required'); return; }
+                const formData = new FormData();
+                formData.set('name', name);
+                formData.set('type', type);
+                formData.set('is_active', is_active);
+                formData.set('stores', stores);
+                const token = localStorage.getItem('token');
+                try {
+                    const res = await fetch('/recipes/', {
+                        method: 'POST',
+                        headers: { Authorization: 'Bearer ' + token },
+                        body: formData
+                    });
+                    if (res.ok) {
+                        await loadRecipes();
+                    } else {
+                        const err = await res.json();
+                        alert('Error: ' + err.detail);
+                    }
+                } catch (e) {
+                    alert('Failed to create recipe.');
                 }
-                html += `</li>`;
+            };
+            // Bulk delete logic
+            document.getElementById('selectAllRecipes').onchange = function() {
+                document.querySelectorAll('.recipeCheckbox').forEach(cb => cb.checked = this.checked);
+                toggleDeleteSelectedBtn();
+            };
+            document.querySelectorAll('.recipeCheckbox').forEach(cb => cb.onchange = toggleDeleteSelectedBtn);
+            function toggleDeleteSelectedBtn() {
+                const anyChecked = Array.from(document.querySelectorAll('.recipeCheckbox')).some(cb => cb.checked);
+                document.getElementById('deleteSelectedBtn').style.display = anyChecked ? '' : 'none';
             }
-            html += `</ul>`;
+            document.getElementById('deleteSelectedBtn').onclick = async function() {
+                if (!confirm('Delete selected recipes?')) return;
+                const token = localStorage.getItem('token');
+                const ids = Array.from(document.querySelectorAll('.recipeCheckbox:checked')).map(cb => cb.getAttribute('data-id'));
+                for (const id of ids) {
+                    await fetch(`/recipes/${id}`, { method: 'DELETE', headers: { Authorization: 'Bearer ' + token } });
+                }
+                await loadRecipes();
+            };
         }
-        document.getElementById('recipes-list').innerHTML = html;
     } catch (e) {
-        document.getElementById('recipes-list').innerHTML = `<div class='alert alert-danger'>Failed to load recipes.</div>`;
+        document.getElementById('recipes-table').innerHTML = `<div class='alert alert-danger'>Failed to load recipes.</div>`;
     }
 }
-
-document.getElementById('addRecipeForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    // Checkbox: if checked, type=half, else type=final
-    formData.set('type', document.getElementById('halfProductCheck').checked ? 'half' : 'final');
-    // Active checkbox
-    formData.set('is_active', document.getElementById('activeCheck').checked ? 1 : 0);
-    // Stores checkboxes
-    const stores = Array.from(document.querySelectorAll('#storesCheckboxes input[name="stores"]:checked')).map(o => o.value).join(',');
-    formData.set('stores', stores);
-    const token = localStorage.getItem('token');
-    try {
-        const res = await fetch('/recipes/', {
-            method: 'POST',
-            headers: { Authorization: 'Bearer ' + token },
-            body: formData
-        });
-        if (res.ok) {
-            await loadRecipes();
-        } else {
-            const err = await res.json();
-            alert('Error: ' + err.detail);
-        }
-    } catch (e) {
-        alert('Failed to create recipe.');
-    }
-});
 
 window.viewRecipe = async function(recipeId) {
     featureContent.innerHTML = `<h3><i class='fas fa-book me-2'></i>Recipe Details</h3><div id='recipe-detail'>Loading...</div>`;
