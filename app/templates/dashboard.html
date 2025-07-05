@@ -104,19 +104,18 @@ async function loadRecipes() {
         const recipes = await res.json();
         let html = '';
         if (isEditor) {
-            html += `<button class='btn btn-danger mb-2' id='deleteSelectedBtn' style='display:none'><i class='fas fa-trash'></i> Delete Selected</button> `;
-            html += `<button class='btn btn-primary mb-2' id='addRowBtn'><i class='fas fa-plus'></i> Add Recipe</button>`;
+            html += `<button class='btn btn-danger mb-2' id='deleteSelectedBtn' style='display:none'><i class='fas fa-trash'></i> Delete Selected</button>`;
         }
-        html += `<table class='table table-bordered align-middle'><thead><tr>`;
+        html += `<table class='table table-hover table-bordered align-middle'><thead><tr>`;
         if (isEditor) html += `<th style='width:30px'><input type='checkbox' id='selectAllRecipes'></th>`;
         html += `<th>Name</th><th>Type</th><th>Active</th><th>Stores</th>`;
         if (isEditor) html += `<th>Action</th>`;
         html += `</tr></thead><tbody id='recipesTbody'>`;
-        // Add row for new recipe (hidden by default)
+        // Inline add row at the top
         if (isEditor) {
-            html += `<tr id='addRecipeRow' style='display:none'>
+            html += `<tr id='addRecipeRow'>
                 <td></td>
-                <td><input type='text' class='form-control form-control-sm' id='newRecipeName'></td>
+                <td><input type='text' class='form-control form-control-sm' id='newRecipeName' placeholder='Name'></td>
                 <td><select class='form-select form-select-sm' id='newRecipeType'><option value='final'>Final</option><option value='half'>Half</option></select></td>
                 <td class='text-center'><input type='checkbox' id='newRecipeActive' checked></td>
                 <td>
@@ -130,7 +129,7 @@ async function loadRecipes() {
                         <label><input type='checkbox' class='form-check-input' value='Kompartman'> Kompartman</label>
                     </div>
                 </td>
-                <td><button class='btn btn-success btn-sm' id='saveNewRecipeBtn'><i class='fas fa-check'></i> Save</button> <button class='btn btn-secondary btn-sm' id='cancelNewRecipeBtn'><i class='fas fa-times'></i> Cancel</button></td>
+                <td><button class='btn btn-success btn-sm' id='saveNewRecipeBtn'><i class='fas fa-plus'></i> Add</button></td>
             </tr>`;
         }
         // Existing recipes
@@ -143,16 +142,8 @@ async function loadRecipes() {
         }
         html += `</tbody></table>`;
         document.getElementById('recipes-table').innerHTML = html;
-        // Add row button logic
+        // Add row save logic
         if (isEditor) {
-            document.getElementById('addRowBtn').onclick = function() {
-                document.getElementById('addRecipeRow').style.display = '';
-                this.disabled = true;
-            };
-            document.getElementById('cancelNewRecipeBtn').onclick = function() {
-                document.getElementById('addRecipeRow').style.display = 'none';
-                document.getElementById('addRowBtn').disabled = false;
-            };
             document.getElementById('saveNewRecipeBtn').onclick = async function() {
                 const name = document.getElementById('newRecipeName').value.trim();
                 const type = document.getElementById('newRecipeType').value;
@@ -181,7 +172,7 @@ async function loadRecipes() {
                     alert('Failed to create recipe.');
                 }
             };
-            // Bulk delete logic
+            // Bulk select/delete logic
             document.getElementById('selectAllRecipes').onchange = function() {
                 document.querySelectorAll('.recipeCheckbox').forEach(cb => cb.checked = this.checked);
                 toggleDeleteSelectedBtn();
