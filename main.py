@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 
 from app.database import engine, Base
-from app.routers import auth, users, recipes, employees
+from app.routers import auth, users, employees
 from app.models import user, recipe
 
 # Create database tables
@@ -31,7 +31,6 @@ templates = Jinja2Templates(directory="app/templates")
 # Include routers
 app.include_router(auth.router, prefix="/auth", tags=["authentication"])
 app.include_router(users.router, prefix="/users", tags=["users"])
-app.include_router(recipes.router, prefix="/recipes", tags=["recipes"])
 app.include_router(employees.router, prefix="/employees", tags=["employees"])
 
 @app.get("/")
